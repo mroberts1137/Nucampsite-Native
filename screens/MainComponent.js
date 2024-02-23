@@ -7,6 +7,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList
 } from '@react-navigation/drawer';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import DirectoryScreen from './DirectoryScreen';
@@ -151,10 +152,15 @@ const LoginNavigator = () => {
       <Stack.Screen
         name='Login'
         component={LoginScreen}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
+          headerTitle: getFocusedRouteNameFromRoute(route),
           headerLeft: () => {
             <Icon
-              name='sign-in'
+              name={
+                getFocusedRouteNameFromRoute(route) === 'Register'
+                  ? 'user-plus'
+                  : 'sign-in'
+              }
               type='font-awesome'
               iconStyle={styles.stackIcon}
               onPress={() => navigation.toggleDrawer()}
@@ -230,7 +236,7 @@ const Main = () => {
       <Drawer.Navigator
         initialRouteName='Home'
         drawerContent={CustomDrawerContent}
-        drawerStyle={{ backgroundCOlor: '#CEC8FF' }}
+        drawerStyle={{ backgroundColor: '#CEC8FF' }}
       >
         <Drawer.Screen
           name='Login'
